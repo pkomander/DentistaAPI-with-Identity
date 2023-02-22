@@ -15,5 +15,8 @@ namespace WebAPI.Dominio.Models
         public string Nome { get; set; }
         public string Especialidade { get; set; }
         public string HorariosDisponiveis { get; set; }
+        public bool Disponibilidade { get; set; }
+        //public int OrganizacaoDentistaId { get; set; }
+        //public OrganizacaoDentista OrganizacaoDentista { get; set; }
     }
 }

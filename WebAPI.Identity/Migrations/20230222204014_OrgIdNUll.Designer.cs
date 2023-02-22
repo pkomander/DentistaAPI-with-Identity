@@ -12,8 +12,8 @@ using WebAPI.Repository;
 namespace WebAPI.Identity.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230218230840_init")]
-    partial class init
+    [Migration("20230222204014_OrgIdNUll")]
+    partial class OrgIdNUll
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,12 +112,248 @@ namespace WebAPI.Identity.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WebAPI.Dominio.Models.Consulta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Data")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DentistaId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Horario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PacienteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DentistaId");
+
+                    b.HasIndex("PacienteId");
+
+                    b.ToTable("Consultas");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.Dentista", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Disponibilidade")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Especialidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HorariosDisponiveis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Dentistas");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.Especialidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeEspecialidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Especialidades");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.EspecialidadeDentista", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DentistaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EspecialidadeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DentistaId");
+
+                    b.HasIndex("EspecialidadeId");
+
+                    b.ToTable("EspecialidadeDentistas");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.Historico", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ConsultaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsultaId");
+
+                    b.ToTable("HistoricoConsultas");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.OrganizacaoDentista", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DentistaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrgId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrganizacaoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DentistaId");
+
+                    b.HasIndex("OrganizacaoId");
+
+                    b.ToTable("OrganizacaoDentistas");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.Paciente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CPF")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DDD")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pacientes");
+                });
+
             modelBuilder.Entity("WebAPI.Dominio.Organizacao", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CEP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CNPJ")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DDD")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Endereco")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imagem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Numero")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -200,8 +436,8 @@ namespace WebAPI.Identity.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("OrgId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("OrgId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -286,6 +522,74 @@ namespace WebAPI.Identity.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.Consulta", b =>
+                {
+                    b.HasOne("WebAPI.Dominio.Models.Dentista", "Dentista")
+                        .WithMany()
+                        .HasForeignKey("DentistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Dominio.Models.Paciente", "Paciente")
+                        .WithMany()
+                        .HasForeignKey("PacienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dentista");
+
+                    b.Navigation("Paciente");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.EspecialidadeDentista", b =>
+                {
+                    b.HasOne("WebAPI.Dominio.Models.Dentista", "Dentista")
+                        .WithMany()
+                        .HasForeignKey("DentistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Dominio.Models.Especialidade", "Especialidade")
+                        .WithMany()
+                        .HasForeignKey("EspecialidadeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dentista");
+
+                    b.Navigation("Especialidade");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.Historico", b =>
+                {
+                    b.HasOne("WebAPI.Dominio.Models.Consulta", "Consulta")
+                        .WithMany()
+                        .HasForeignKey("ConsultaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Consulta");
+                });
+
+            modelBuilder.Entity("WebAPI.Dominio.Models.OrganizacaoDentista", b =>
+                {
+                    b.HasOne("WebAPI.Dominio.Models.Dentista", "Dentista")
+                        .WithMany()
+                        .HasForeignKey("DentistaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Dominio.Organizacao", "Organizacao")
+                        .WithMany()
+                        .HasForeignKey("OrganizacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Dentista");
+
+                    b.Navigation("Organizacao");
                 });
 
             modelBuilder.Entity("WebAPI.Dominio.User", b =>

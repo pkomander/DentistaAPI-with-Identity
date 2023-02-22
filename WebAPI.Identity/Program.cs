@@ -39,12 +39,14 @@ namespace WebAPI.Identity
                 opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("APIConnection"), sql =>
                 sql.MigrationsAssembly(migrationAssembly)));
 
+            //injetando dependencias
             builder.Services.AddScoped<IPaciente, PacienteRepository>();
             builder.Services.AddScoped<IDentista, DentistaRepository>();
-            builder.Services.AddScoped<IAgenda, AgendaRepository>();
             builder.Services.AddScoped<IConsulta, ConsultaRepository>();
             builder.Services.AddScoped<IHistorico, HistoricoRepository>();
+            builder.Services.AddScoped<IOrganizacao, OrganizacaoRepository>();
 
+            //aqui vai as options para utilizacao na senha, inserir numero, letra maiuscula ou caractere especial
             builder.Services.AddIdentityCore<User>(options =>
             {
                 //options.SignIn.RequireConfirmedEmail = true;

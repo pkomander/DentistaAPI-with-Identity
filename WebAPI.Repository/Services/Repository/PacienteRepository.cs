@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using WebAPI.Dominio.Models;
@@ -33,6 +35,7 @@ namespace WebAPI.Repository.Services.Repository
         public List<Paciente> RecuperarPacientes()
         {
             var pacientes = _context.Pacientes.ToList();
+            EnviaEmailMarcacao();
 
             return pacientes;
         }
@@ -78,6 +81,36 @@ namespace WebAPI.Repository.Services.Repository
             pacienteBanco.Nome = pacienteRequest.Nome;
 
             return pacienteBanco;
+        }
+
+        public void EnviaEmailMarcacao()
+        {
+            //string PacienteName, DateTime dataConsulta, string emailUsuario
+            string siteName = "Dentista Agenda";
+            string mensagem = "Consulta Agendada para {PacienteName} na data: {dataConsulta}";
+
+            try
+            {
+
+                SmtpClient client = new SmtpClient();
+                client.Host = "smtp.gmail.com";
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential("aluracursospaulo@gmail.com", "ffqryyapedgywzuc");
+                MailMessage mail = new MailMessage();
+                mail.Sender = new MailAddress("aluracursospaulo@gmail.com", "Dentista APP");
+                mail.From = new MailAddress("aluracursospaulo@gmail.com", "Dentista APP");
+                mail.To.Add(new MailAddress("praraujo2010@hotmail.com", "Paciente"));
+                mail.Subject = "Contato";
+                mail.Body = $" Mensagem do site: {siteName} <br/> Nome: nomeUsuario. <br/> Email : emailUsuario <br/> Mensagem :  {mensagem}";
+                mail.IsBodyHtml = true;
+                mail.Priority = MailPriority.High;
+                client.Send(mail);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            
         }
     }
 }

@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Dominio.Models
 {
-    public class Agenda
+    public class EspecialidadeDentista
     {
         [Key]
         [Required]
         public int Id { get; set; }
         public int DentistaId { get; set; }
         public virtual Dentista Dentista { get; set; }
-        public string Disponibilidade { get; set; }
+        public int EspecialidadeId { get; set; }
+        public virtual Especialidade Especialidade { get; set; }
     }
 }

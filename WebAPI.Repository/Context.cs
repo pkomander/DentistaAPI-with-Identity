@@ -46,7 +46,10 @@ namespace WebAPI.Repository
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Dentista> Dentistas { get; set; }
         public DbSet<Consulta> Consultas { get; set; }
-        public DbSet<Agenda> Agendas { get; set; }
         public DbSet<Historico> HistoricoConsultas { get; set; }
+        public DbSet<Organizacao> Organizacoes { get; set; }
+        public DbSet<OrganizacaoDentista> OrganizacaoDentistas { get; set; }
+        public DbSet<Especialidade> Especialidades { get; set; }
+        public DbSet<EspecialidadeDentista> EspecialidadeDentistas { get; set; }
     }
 }

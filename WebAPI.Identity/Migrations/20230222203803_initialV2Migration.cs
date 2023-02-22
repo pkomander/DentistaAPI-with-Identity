@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebAPI.Identity.Migrations
 {
-    public partial class init : Migration
+    public partial class initialV2Migration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -25,15 +25,77 @@ namespace WebAPI.Identity.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Dentistas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Especialidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HorariosDisponiveis = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Disponibilidade = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dentistas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Especialidades",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NomeEspecialidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descricao = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Especialidades", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Organizacoes",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DDD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Numero = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CNPJ = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CEP = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    Imagem = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Organizacoes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pacientes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CPF = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Bairro = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DDD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pacientes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,6 +120,32 @@ namespace WebAPI.Identity.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EspecialidadeDentistas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DentistaId = table.Column<int>(type: "int", nullable: false),
+                    EspecialidadeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EspecialidadeDentistas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EspecialidadeDentistas_Dentistas_DentistaId",
+                        column: x => x.DentistaId,
+                        principalTable: "Dentistas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EspecialidadeDentistas_Especialidades_EspecialidadeId",
+                        column: x => x.EspecialidadeId,
+                        principalTable: "Especialidades",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -65,7 +153,7 @@ namespace WebAPI.Identity.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NomeCompleto = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Member = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OrgId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    OrgId = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -89,6 +177,61 @@ namespace WebAPI.Identity.Migrations
                         column: x => x.OrgId,
                         principalTable: "Organizacoes",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrganizacaoDentistas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DentistaId = table.Column<int>(type: "int", nullable: false),
+                    OrgId = table.Column<int>(type: "int", nullable: false),
+                    OrganizacaoId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrganizacaoDentistas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrganizacaoDentistas_Dentistas_DentistaId",
+                        column: x => x.DentistaId,
+                        principalTable: "Dentistas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrganizacaoDentistas_Organizacoes_OrganizacaoId",
+                        column: x => x.OrganizacaoId,
+                        principalTable: "Organizacoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Consultas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Data = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Horario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PacienteId = table.Column<int>(type: "int", nullable: false),
+                    DentistaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Consultas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Consultas_Dentistas_DentistaId",
+                        column: x => x.DentistaId,
+                        principalTable: "Dentistas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Consultas_Pacientes_PacienteId",
+                        column: x => x.PacienteId,
+                        principalTable: "Pacientes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,6 +319,25 @@ namespace WebAPI.Identity.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "HistoricoConsultas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ConsultaId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HistoricoConsultas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HistoricoConsultas_Consultas_ConsultaId",
+                        column: x => x.ConsultaId,
+                        principalTable: "Consultas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -219,6 +381,41 @@ namespace WebAPI.Identity.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consultas_DentistaId",
+                table: "Consultas",
+                column: "DentistaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consultas_PacienteId",
+                table: "Consultas",
+                column: "PacienteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EspecialidadeDentistas_DentistaId",
+                table: "EspecialidadeDentistas",
+                column: "DentistaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EspecialidadeDentistas_EspecialidadeId",
+                table: "EspecialidadeDentistas",
+                column: "EspecialidadeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HistoricoConsultas_ConsultaId",
+                table: "HistoricoConsultas",
+                column: "ConsultaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrganizacaoDentistas_DentistaId",
+                table: "OrganizacaoDentistas",
+                column: "DentistaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrganizacaoDentistas_OrganizacaoId",
+                table: "OrganizacaoDentistas",
+                column: "OrganizacaoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -239,13 +436,34 @@ namespace WebAPI.Identity.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "EspecialidadeDentistas");
+
+            migrationBuilder.DropTable(
+                name: "HistoricoConsultas");
+
+            migrationBuilder.DropTable(
+                name: "OrganizacaoDentistas");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Especialidades");
+
+            migrationBuilder.DropTable(
+                name: "Consultas");
+
+            migrationBuilder.DropTable(
                 name: "Organizacoes");
+
+            migrationBuilder.DropTable(
+                name: "Dentistas");
+
+            migrationBuilder.DropTable(
+                name: "Pacientes");
         }
     }
 }
